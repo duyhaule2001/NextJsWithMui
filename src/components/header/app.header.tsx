@@ -7,17 +7,14 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import InputBase from "@mui/material/InputBase";
-import Badge from "@mui/material/Badge";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
-import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import MailIcon from "@mui/icons-material/Mail";
-import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import Container from "@mui/material/Container";
 import { Avatar } from "@mui/material";
+import Link from "next/link";
 
 //style-components
 const Search = styled("div")(({ theme }) => ({
@@ -96,8 +93,10 @@ export default function AppHeader() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem>
+        <Link href={"/profile"}>Profile</Link>
+      </MenuItem>
+      <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
     </Menu>
   );
 
@@ -135,12 +134,7 @@ export default function AppHeader() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar
-        position="static"
-        sx={{
-          backgroundColor: "#000000de",
-        }}
-      >
+      <AppBar position="static">
         <Container>
           <Toolbar>
             <Typography
@@ -169,8 +163,8 @@ export default function AppHeader() {
                 cursor: "pointer",
               }}
             >
-              <span>Playlist</span>
-              <span>Likes</span>
+              <Link href="/playlist">Playlist</Link>
+              <Link href="/like">Likes</Link>
               <span>Upload</span>
               <Avatar onClick={handleProfileMenuOpen}>LE</Avatar>
             </Box>
