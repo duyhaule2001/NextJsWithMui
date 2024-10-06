@@ -1,6 +1,6 @@
 "use client";
 import { AppBar, Container } from "@mui/material";
-import React, { useState } from "react";
+import React from "react";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 import { useHasMounted } from "../utils/customHooks";
@@ -8,6 +8,8 @@ import { useHasMounted } from "../utils/customHooks";
 const AppFooter = () => {
   const hasMounted = useHasMounted();
   if (!hasMounted) return <></>;
+
+  console.log("check backend", process.env.NEXT_PUBLIC_BACKEND_URL);
 
   return (
     <div>
@@ -30,7 +32,7 @@ const AppFooter = () => {
           <AudioPlayer
             autoPlay
             onPlay={(e) => console.log("onPlay")}
-            src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3"
+            src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/tracks/hoidanit.mp3`}
             layout="stacked"
             style={{ border: "none", boxShadow: "none" }}
             // other props here
