@@ -1,7 +1,12 @@
-import React from "react";
+"use client";
+// import React, { useState } from "react";
 
 const LikePage = () => {
-  return <div>like</div>;
+  //   const [name, setName] = useState("leduyhau");
+  const handleClick = () => {
+    alert("me");
+  };
+  return <div onClick={handleClick}>like</div>;
 };
 
 export default LikePage;

@@ -1,3 +1,12 @@
+import MainSlider from "@/components/main/main.slider";
+import { Container } from "@mui/material";
+
 export default function HomePage() {
-  return <div className=" text-fuchsia-400">home page</div>;
+  return (
+    <>
+      <Container>
+        <MainSlider />
+      </Container>
+    </>
+  );
 }
