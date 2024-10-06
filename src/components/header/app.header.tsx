@@ -15,6 +15,7 @@ import MoreIcon from "@mui/icons-material/MoreVert";
 import Container from "@mui/material/Container";
 import { Avatar } from "@mui/material";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 //style-components
 const Search = styled("div")(({ theme }) => ({
@@ -64,6 +65,7 @@ export default function AppHeader() {
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+  const router = useRouter();
 
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -80,6 +82,10 @@ export default function AppHeader() {
 
   const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setMobileMoreAnchorEl(event.currentTarget);
+  };
+
+  const handleRedirectHome = () => {
+    router.push("/");
   };
 
   const menuId = "primary-search-account-menu";
@@ -141,7 +147,8 @@ export default function AppHeader() {
               variant="h6"
               noWrap
               component="div"
-              sx={{ display: { xs: "none", sm: "block" } }}
+              sx={{ display: { xs: "none", sm: "block" }, cursor: "pointer" }}
+              onClick={() => handleRedirectHome()}
             >
               SoundCloud
             </Typography>
