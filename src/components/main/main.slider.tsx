@@ -9,7 +9,11 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import Divider from "@mui/material/Divider";
 
-const MainSlider = () => {
+interface IProps {
+  data: ITrackTop[];
+}
+
+const MainSlider = (props: IProps) => {
   const NextArrow = (props: any) => {
     return (
       <Button
@@ -72,66 +76,6 @@ const MainSlider = () => {
     >
       <h2> Multiple tracks </h2>
 
-      <Slider {...settings}>
-        <div className="abc">
-          <h3>Track 1</h3>
-        </div>
-        <div className="abc">
-          <h3>Track 2</h3>
-        </div>
-        <div className="abc">
-          <h3>Track 3</h3>
-        </div>
-        <div className="abc">
-          <h3>Track 4</h3>
-        </div>
-        <div className="abc">
-          <h3>Track 5</h3>
-        </div>
-        <div className="abc">
-          <h3>Track 6</h3>
-        </div>
-        <div className="abc">
-          <h3>Track 7</h3>
-        </div>
-        <div className="abc">
-          <h3>Track 8</h3>
-        </div>
-        <div className="abc">
-          <h3>Track 9</h3>
-        </div>
-      </Slider>
-      <Divider />
-      <Slider {...settings}>
-        <div className="abc">
-          <h3>Track 1</h3>
-        </div>
-        <div className="abc">
-          <h3>Track 2</h3>
-        </div>
-        <div className="abc">
-          <h3>Track 3</h3>
-        </div>
-        <div className="abc">
-          <h3>Track 4</h3>
-        </div>
-        <div className="abc">
-          <h3>Track 5</h3>
-        </div>
-        <div className="abc">
-          <h3>Track 6</h3>
-        </div>
-        <div className="abc">
-          <h3>Track 7</h3>
-        </div>
-        <div className="abc">
-          <h3>Track 8</h3>
-        </div>
-        <div className="abc">
-          <h3>Track 9</h3>
-        </div>
-      </Slider>
-      <Divider />
       <Slider {...settings}>
         <div className="abc">
           <h3>Track 1</h3>
