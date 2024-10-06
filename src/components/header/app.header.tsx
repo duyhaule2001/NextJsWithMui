@@ -170,8 +170,18 @@ export default function AppHeader() {
                 cursor: "pointer",
               }}
             >
-              <Link href="/playlist">Playlist</Link>
-              <Link href="/like">Likes</Link>
+              <Link
+                href="/playlist"
+                style={{ color: "white", textDecoration: "none" }}
+              >
+                Playlist
+              </Link>
+              <Link
+                href="/like"
+                style={{ color: "white", textDecoration: "none" }}
+              >
+                Likes
+              </Link>
               <span>Upload</span>
               <Avatar onClick={handleProfileMenuOpen}>LE</Avatar>
             </Box>
