@@ -17,15 +17,16 @@ interface IProps {
 
 const MainSlider = (props: IProps) => {
   const { data, title } = props;
+
   const NextArrow = (props: any) => {
     return (
       <Button
-        variant="contained"
         color="inherit"
+        variant="contained"
         onClick={props.onClick}
         sx={{
           position: "absolute",
-          right: 0,
+          right: 25,
           top: "25%",
           zIndex: 2,
           minWidth: 30,
@@ -40,12 +41,12 @@ const MainSlider = (props: IProps) => {
   const PrevArrow = (props: any) => {
     return (
       <Button
-        variant="contained"
         color="inherit"
+        variant="contained"
         onClick={props.onClick}
         sx={{
           position: "absolute",
-          top: "20%",
+          top: "25%",
           zIndex: 2,
           minWidth: 30,
           width: 35,
@@ -84,8 +85,7 @@ const MainSlider = (props: IProps) => {
         },
       }}
     >
-      <h2> Multiple tracks </h2>
-
+      <h2> {title} </h2>
       <Slider {...settings}>
         {data.map((track) => {
           return (
@@ -93,10 +93,7 @@ const MainSlider = (props: IProps) => {
               <img
                 src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${track.imgUrl}`}
               />
-              <Link
-                href={`/track/${track._id}?audio=${track.trackUrl}`}
-                style={{ textDecoration: "none" }}
-              >
+              <Link href={`/track/${track._id}?audio=${track.trackUrl}`}>
                 <h4>{track.title}</h4>
               </Link>
               <h5>{track.description}</h5>
