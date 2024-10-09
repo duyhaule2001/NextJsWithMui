@@ -17,6 +17,7 @@ import { Avatar } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { signIn, signOut } from "next-auth/react";
 
 //style-components
 const Search = styled("div")(({ theme }) => ({
@@ -61,6 +62,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function AppHeader() {
   const { data: session } = useSession();
+  console.log("check session", session);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     React.useState<null | HTMLElement>(null);
@@ -104,7 +106,14 @@ export default function AppHeader() {
       <MenuItem>
         <Link href={"/profile"}>Profile</Link>
       </MenuItem>
-      <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
+      <MenuItem
+        onClick={() => {
+          handleMenuClose();
+          signOut();
+        }}
+      >
+        Logout
+      </MenuItem>
     </Menu>
   );
 
@@ -192,8 +201,9 @@ export default function AppHeader() {
               ) : (
                 <>
                   <Link
-                    href="/api/auth/signin"
+                    href="#"
                     style={{ color: "white", textDecoration: "none" }}
+                    onClick={() => signIn()}
                   >
                     Login
                   </Link>
