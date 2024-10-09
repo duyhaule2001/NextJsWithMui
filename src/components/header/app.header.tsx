@@ -16,6 +16,7 @@ import Container from "@mui/material/Container";
 import { Avatar } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 //style-components
 const Search = styled("div")(({ theme }) => ({
@@ -59,6 +60,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function AppHeader() {
+  const { data: session } = useSession();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     React.useState<null | HTMLElement>(null);
@@ -170,20 +172,33 @@ export default function AppHeader() {
                 cursor: "pointer",
               }}
             >
-              <Link
-                href="/playlist"
-                style={{ color: "white", textDecoration: "none" }}
-              >
-                Playlist
-              </Link>
-              <Link
-                href="/like"
-                style={{ color: "white", textDecoration: "none" }}
-              >
-                Likes
-              </Link>
-              <span>Upload</span>
-              <Avatar onClick={handleProfileMenuOpen}>LE</Avatar>
+              {session ? (
+                <>
+                  <Link
+                    href="/playlist"
+                    style={{ color: "white", textDecoration: "none" }}
+                  >
+                    Playlist
+                  </Link>
+                  <Link
+                    href="/like"
+                    style={{ color: "white", textDecoration: "none" }}
+                  >
+                    Likes
+                  </Link>
+                  <span>Upload</span>
+                  <Avatar onClick={handleProfileMenuOpen}>LE</Avatar>
+                </>
+              ) : (
+                <>
+                  <Link
+                    href="/api/auth/signin"
+                    style={{ color: "white", textDecoration: "none" }}
+                  >
+                    Login
+                  </Link>
+                </>
+              )}
             </Box>
             <Box sx={{ display: { xs: "flex", md: "none" } }}>
               <IconButton
