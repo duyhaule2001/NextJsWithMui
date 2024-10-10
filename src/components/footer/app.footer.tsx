@@ -28,7 +28,7 @@ const AppFooter = () => {
           }}
         >
           <AudioPlayer
-            autoPlay
+            autoPlay={false}
             onPlay={(e) => console.log("onPlay")}
             src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/tracks/hoidanit.mp3`}
             layout="stacked"
