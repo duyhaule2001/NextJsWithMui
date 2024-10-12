@@ -201,9 +201,8 @@ export default function AppHeader() {
               ) : (
                 <>
                   <Link
-                    href="#"
+                    href="auth/signin"
                     style={{ color: "white", textDecoration: "none" }}
-                    onClick={() => signIn()}
                   >
                     Login
                   </Link>

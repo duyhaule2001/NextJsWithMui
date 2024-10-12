@@ -11,6 +11,7 @@ import GitHubIcon from "@mui/icons-material/GitHub";
 import GoogleIcon from "@mui/icons-material/Google";
 import React, { useState } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { signIn } from "next-auth/react";
 const AuthSign = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [userName, setUserName] = useState<string>("");
@@ -100,7 +101,10 @@ const AuthSign = () => {
             gap: 10,
           }}
         >
-          <GitHubIcon sx={{ color: "orange" }} />
+          <GitHubIcon
+            onClick={() => signIn("github")}
+            sx={{ color: "orange" }}
+          />
           <GoogleIcon sx={{ color: "orange" }} />
         </div>
       </Grid>
