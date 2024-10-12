@@ -12,6 +12,10 @@ import GoogleIcon from "@mui/icons-material/Google";
 import React, { useState } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { signIn } from "next-auth/react";
+import Link from "next/link";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { useRouter } from "next/navigation";
+
 const AuthSign = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [userName, setUserName] = useState<string>("");
@@ -20,7 +24,9 @@ const AuthSign = () => {
   const [userNameError, setUserNameError] = useState<boolean>(false);
   const [passwordError, setPasswordError] = useState<boolean>(false);
 
-  const handleLogin = () => {
+  const router = useRouter();
+
+  const handleLogin = async () => {
     setUserNameError(false);
     setPasswordError(false);
 
@@ -32,7 +38,17 @@ const AuthSign = () => {
       setPasswordError(true);
     }
 
-    console.log("check name,password", userName, password);
+    const res = await signIn("credentials", {
+      username: userName,
+      password: password,
+      redirect: false,
+    });
+    if (!res?.error) {
+      router.push("/");
+    } else {
+      alert(res.error);
+    }
+    console.log(res);
   };
   return (
     <Grid
@@ -55,7 +71,12 @@ const AuthSign = () => {
           rowGap: "20px",
         }}
       >
-        <span style={{ textAlign: "center" }}>Sign in</span>
+        <div style={{ display: "flex", gap: "200px" }}>
+          <Link href="/">
+            <ArrowBackIcon />
+          </Link>
+          <span style={{ textAlign: "center" }}>Sign in</span>
+        </div>
         <TextField
           id="outlined-basic"
           label="Username"
