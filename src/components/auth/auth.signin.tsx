@@ -1,10 +1,12 @@
 "use client";
 import {
+  Alert,
   Button,
   Divider,
   Grid,
   IconButton,
   InputAdornment,
+  Snackbar,
   TextField,
 } from "@mui/material";
 import GitHubIcon from "@mui/icons-material/GitHub";
@@ -23,6 +25,9 @@ const AuthSign = () => {
 
   const [userNameError, setUserNameError] = useState<boolean>(false);
   const [passwordError, setPasswordError] = useState<boolean>(false);
+
+  const [openMessage, setOpenMessage] = useState<boolean>(false);
+  const [resMessage, setResMessage] = useState<string>("");
 
   const router = useRouter();
 
@@ -46,7 +51,8 @@ const AuthSign = () => {
     if (!res?.error) {
       router.push("/");
     } else {
-      alert(res.error);
+      setOpenMessage(true);
+      setResMessage(res.error);
     }
     console.log(res);
   };
@@ -90,6 +96,11 @@ const AuthSign = () => {
 
         <TextField
           onChange={(event) => setPassword(event.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleLogin();
+            }
+          }}
           variant="outlined"
           margin="normal"
           required
@@ -129,6 +140,19 @@ const AuthSign = () => {
           <GoogleIcon sx={{ color: "orange" }} />
         </div>
       </Grid>
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        open={openMessage}
+      >
+        <Alert
+          severity="error"
+          onClose={() => setOpenMessage(false)}
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          {resMessage}
+        </Alert>
+      </Snackbar>
     </Grid>
   );
 };
