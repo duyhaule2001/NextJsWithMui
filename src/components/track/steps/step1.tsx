@@ -4,7 +4,7 @@ import "./theme.css";
 import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { sendRequest, sendRequestFile } from "@/components/utils/api";
 import { useSession } from "next-auth/react";
 import axios from "axios";
@@ -34,25 +34,20 @@ function InputFileUpload() {
     </Button>
   );
 }
-
-const Step1 = () => {
+interface IProps {
+  setValue: (v: number) => void;
+  setTrackUpload: any;
+}
+const Step1 = (props: IProps) => {
   const { data: session } = useSession();
   const onDrop = useCallback(
     async (acceptedFiles: FileWithPath[]) => {
       // Do something with the files
       if (acceptedFiles && acceptedFiles[0]) {
+        props.setValue(1);
         const audio = acceptedFiles[0];
         const formData = new FormData();
         formData.append("fileUpload", audio);
-        // const chills = await sendRequestFile<IBackendRes<ITrackTop[]>>({
-        //   url: "http://localhost:8000/api/v1/files/upload",
-        //   method: "POST",
-        //   body: formData,
-        //   headers: {
-        //     Authorization: `Bearer ${session?.access_token}`,
-        //     target_type: "tracks",
-        //   },
-        // });
         const res = await axios.post(
           "http://localhost:8000/api/v1/files/upload",
           formData,
@@ -60,6 +55,16 @@ const Step1 = () => {
             headers: {
               Authorization: `Bearer ${session?.access_token}`,
               target_type: "tracks",
+              delay: 5000,
+            },
+            onUploadProgress: (progressEvent) => {
+              let percentCompleted = Math.floor(
+                (progressEvent.loaded * 100) / progressEvent.total!
+              );
+              props.setTrackUpload({
+                fileName: acceptedFiles[0].name,
+                percent: percentCompleted,
+              });
             },
           }
         );

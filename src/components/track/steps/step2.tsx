@@ -30,23 +30,10 @@ function LinearProgressWithLabel(
   );
 }
 
-function LinearWithValueLabel() {
-  const [progress, setProgress] = React.useState(10);
-
-  React.useEffect(() => {
-    const timer = setInterval(() => {
-      setProgress((prevProgress) =>
-        prevProgress >= 100 ? 10 : prevProgress + 10
-      );
-    }, 800);
-    return () => {
-      clearInterval(timer);
-    };
-  }, []);
-
+function LinearWithValueLabel(props: IProps) {
   return (
     <Box sx={{ width: "100%" }}>
-      <LinearProgressWithLabel value={progress} />
+      <LinearProgressWithLabel value={props.trackUpload.percent} />
     </Box>
   );
 }
@@ -75,8 +62,14 @@ function InputFileUpload() {
     </Button>
   );
 }
-
-const Step2 = () => {
+interface IProps {
+  trackUpload: {
+    fileName: string;
+    percent: number;
+  };
+}
+const Step2 = (props: IProps) => {
+  const { trackUpload } = props;
   const category = [
     {
       value: "CHILL",
@@ -95,8 +88,8 @@ const Step2 = () => {
   return (
     <div>
       <div>
-        <div>Your uploading track:</div>
-        <LinearWithValueLabel />
+        <div>{trackUpload.fileName}</div>
+        <LinearWithValueLabel trackUpload={trackUpload} />
       </div>
 
       <Grid container spacing={2} mt={5}>
