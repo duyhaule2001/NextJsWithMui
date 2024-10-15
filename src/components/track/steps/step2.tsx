@@ -12,6 +12,8 @@ import LinearProgress, {
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
+import axios from "axios";
+import { useSession } from "next-auth/react";
 
 function LinearProgressWithLabel(
   props: LinearProgressProps & { value: number }
@@ -50,9 +52,42 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 });
 
-function InputFileUpload() {
+function InputFileUpload(props: any) {
+  const { setInfo, info } = props;
+  const { data: session } = useSession();
+
+  const handleUpload = async (image: any) => {
+    const formData = new FormData();
+    formData.append("fileUpload", image);
+    try {
+      const res = await axios.post(
+        "http://localhost:8000/api/v1/files/upload",
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${session?.access_token}`,
+            target_type: "images",
+          },
+        }
+      );
+      setInfo({
+        ...info,
+        imgUrl: res.data.data.fileName,
+      });
+      console.log("check info", info);
+    } catch (error) {
+      //@ts-ignore
+      alert(error?.response?.data?.message);
+    }
+  };
   return (
     <Button
+      onChange={(e) => {
+        const event = e.target as HTMLInputElement;
+        if (event.files) {
+          handleUpload(event.files[0]);
+        }
+      }}
       component="label"
       variant="contained"
       startIcon={<CloudUploadIcon />}
@@ -111,7 +146,9 @@ const Step2 = (props: IProps) => {
     },
   ];
 
-  console.log("check info", info);
+  const handleSubmitForm = () => {
+    console.log("check info", info);
+  };
 
   return (
     <div>
@@ -134,10 +171,18 @@ const Step2 = (props: IProps) => {
           }}
         >
           <div style={{ height: 250, width: 250, background: "#ccc" }}>
-            <div></div>
+            <div>
+              {info.imgUrl && (
+                <img
+                  height={250}
+                  width={250}
+                  src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${info.imgUrl}`}
+                />
+              )}
+            </div>
           </div>
           <div>
-            <InputFileUpload />
+            <InputFileUpload setInfo={setInfo} info={info} />
           </div>
         </Grid>
         <Grid item xs={6} md={8}>
@@ -195,6 +240,7 @@ const Step2 = (props: IProps) => {
             sx={{
               mt: 5,
             }}
+            onClick={() => handleSubmitForm()}
           >
             Save
           </Button>
