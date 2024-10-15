@@ -14,6 +14,7 @@ import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import axios from "axios";
 import { useSession } from "next-auth/react";
+import { sendRequest } from "@/components/utils/api";
 
 function LinearProgressWithLabel(
   props: LinearProgressProps & { value: number }
@@ -114,6 +115,7 @@ interface INewTrack {
 }
 const Step2 = (props: IProps) => {
   const { trackUpload } = props;
+  const { data: session } = useSession();
   const [info, setInfo] = React.useState<INewTrack>({
     title: "",
     description: "",
@@ -146,8 +148,26 @@ const Step2 = (props: IProps) => {
     },
   ];
 
-  const handleSubmitForm = () => {
-    console.log("check info", info);
+  const handleSubmitForm = async () => {
+    const res = await sendRequest<IBackendRes<ITrackTop[]>>({
+      url: "http://localhost:8000/api/v1/tracks",
+      method: "POST",
+      body: {
+        title: info.title,
+        description: info.description,
+        trackUrl: info.trackUrl,
+        imgUrl: info.imgUrl,
+        category: info.category,
+      },
+      headers: {
+        Authorization: `Bearer ${session?.access_token}`,
+      },
+    });
+    if (res.data) {
+      alert("create success");
+    } else {
+      alert(res.message);
+    }
   };
 
   return (
