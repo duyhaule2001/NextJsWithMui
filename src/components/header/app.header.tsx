@@ -195,7 +195,12 @@ export default function AppHeader() {
                   >
                     Likes
                   </Link>
-                  <span>Upload</span>
+                  <Link
+                    href="/track/upload"
+                    style={{ color: "white", textDecoration: "none" }}
+                  >
+                    Upload
+                  </Link>
                   <Avatar onClick={handleProfileMenuOpen}>LE</Avatar>
                 </>
               ) : (
