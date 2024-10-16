@@ -103,7 +103,7 @@ export default function AppHeader() {
       onClose={handleMenuClose}
     >
       <MenuItem>
-        <Link href={"/profile"}>Profile</Link>
+        <Link href={`/profile/${session?.user?._id}`}>Profile</Link>
       </MenuItem>
       <MenuItem
         onClick={() => {
@@ -143,7 +143,7 @@ export default function AppHeader() {
         >
           <AccountCircle />
         </IconButton>
-        <p>Profile</p>
+        <span>Profile</span>
       </MenuItem>
     </Menu>
   );
