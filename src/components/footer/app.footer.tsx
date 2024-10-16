@@ -1,16 +1,20 @@
 "use client";
 import { AppBar, Container } from "@mui/material";
-import React from "react";
+import React, { useContext } from "react";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 import { useHasMounted } from "../utils/customHooks";
+import { useTrackContext } from "@/lib/track.wrapper";
 
 const AppFooter = () => {
   const hasMounted = useHasMounted();
+  const { currentTrack, setCurrentTrack } = useTrackContext() as ITrackContext;
+
+  console.log("check track", currentTrack);
   if (!hasMounted) return <></>;
 
   return (
-    <div>
+    <div style={{ marginTop: 50 }}>
       <AppBar
         position="fixed"
         color="primary"
@@ -25,15 +29,18 @@ const AppFooter = () => {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
+            ".rhap_main": {
+              gap: "30px",
+            },
           }}
         >
           <AudioPlayer
             autoPlay={false}
             onPlay={(e) => console.log("onPlay")}
             src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/tracks/hoidanit.mp3`}
-            layout="stacked"
             style={{ border: "none", boxShadow: "none" }}
             // other props here
+            layout="horizontal-reverse"
           />
           <div
             style={{

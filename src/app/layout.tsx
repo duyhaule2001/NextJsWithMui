@@ -1,6 +1,7 @@
 import ThemeRegistry from "@/components/theme-registry/theme.registry";
 import NextAuthWrapper from "./lib/next.auth.wrapper";
 import { ToastProvider } from "@/components/utils/toast/useToast";
+import { TrackContextProvider } from "@/lib/track.wrapper";
 export default function RootLayout({
   children,
 }: {
@@ -11,7 +12,9 @@ export default function RootLayout({
       <body>
         <ThemeRegistry>
           <NextAuthWrapper>
-            <ToastProvider>{children}</ToastProvider>
+            <ToastProvider>
+              <TrackContextProvider>{children}</TrackContextProvider>
+            </ToastProvider>
           </NextAuthWrapper>
         </ThemeRegistry>
       </body>

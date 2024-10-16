@@ -10,10 +10,12 @@ import Typography from "@mui/material/Typography";
 import SkipPreviousIcon from "@mui/icons-material/SkipPrevious";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import SkipNextIcon from "@mui/icons-material/SkipNext";
+import { useTrackContext } from "@/lib/track.wrapper";
 
 const ProfilePage = (props: any) => {
   const { data } = props;
   const theme = useTheme();
+  const { currentTrack, setCurrentTrack } = useTrackContext() as ITrackContext;
   return (
     <Card
       sx={{
@@ -44,7 +46,10 @@ const ProfilePage = (props: any) => {
               <SkipPreviousIcon />
             )}
           </IconButton>
-          <IconButton aria-label="play/pause">
+          <IconButton
+            aria-label="play/pause"
+            onClick={() => setCurrentTrack({ ...data, isPlaying: false })}
+          >
             <PlayArrowIcon sx={{ height: 38, width: 38 }} />
           </IconButton>
           <IconButton aria-label="next">
