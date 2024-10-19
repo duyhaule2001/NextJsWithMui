@@ -1,6 +1,6 @@
 "use client";
 import { AppBar, Container } from "@mui/material";
-import React, { useContext, useRef } from "react";
+import React, { useContext } from "react";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 import { useHasMounted } from "../utils/customHooks";
@@ -8,19 +8,10 @@ import { useTrackContext } from "@/lib/track.wrapper";
 
 const AppFooter = () => {
   const hasMounted = useHasMounted();
-  const playerRef = useRef(null);
   const { currentTrack, setCurrentTrack } = useTrackContext() as ITrackContext;
 
+  console.log("check track", currentTrack);
   if (!hasMounted) return <></>;
-
-  //@ts-ignore
-  if (currentTrack.isPlaying) {
-    //@ts-ignore
-    playerRef?.current?.audio?.current?.play();
-  } else {
-    //@ts-ignore
-    playerRef?.current?.audio?.current?.pause();
-  }
 
   return (
     <div style={{ marginTop: 50 }}>
@@ -44,18 +35,12 @@ const AppFooter = () => {
           }}
         >
           <AudioPlayer
-            ref={playerRef}
             autoPlay={false}
+            onPlay={(e) => console.log("onPlay")}
             src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/tracks/${currentTrack.trackUrl}`}
             style={{ border: "none", boxShadow: "none" }}
             // other props here
             layout="horizontal-reverse"
-            onPlay={() => {
-              setCurrentTrack({ ...currentTrack, isPlaying: true });
-            }}
-            onPause={() => {
-              setCurrentTrack({ ...currentTrack, isPlaying: false });
-            }}
           />
           <div
             style={{
@@ -64,10 +49,8 @@ const AppFooter = () => {
               flexDirection: "column",
             }}
           >
-            <span style={{ marginRight: "10px", color: "black" }}></span>
-            <span style={{ color: "black", width: "100px" }}>
-              {currentTrack.title}
-            </span>
+            <span style={{ marginRight: "10px", color: "black" }}>Eric</span>
+            <span style={{ color: "black", width: "100px" }}>Who am I?</span>
           </div>
         </Container>
       </AppBar>
