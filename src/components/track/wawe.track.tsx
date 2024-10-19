@@ -8,12 +8,14 @@ import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from "@mui/icons-material/Pause";
 import "./wave.scss";
 import { Tooltip } from "@mui/material";
+import { sendRequest } from "../utils/api";
 
 const WaveTrack = () => {
   const searchParams = useSearchParams();
   const fileName = searchParams.get("audio");
   const containerRef = useRef<HTMLDivElement>(null);
   const hoverRef = useRef<HTMLDivElement>(null);
+  const id = searchParams.get("id");
 
   const [time, setTime] = useState<string>("0:00");
   const [duration, setDuration] = useState<string>("0:00");
@@ -78,6 +80,7 @@ const WaveTrack = () => {
   }, []);
   const wavesurfer = useWavesurfer(containerRef, optionsMemo);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [trackInfo, setTrackInfo] = useState<ITrackTop | null>(null);
 
   // Initialize wavesurfer when the container mounts
   // or any of the props change
@@ -111,6 +114,18 @@ const WaveTrack = () => {
     };
   }, [wavesurfer]);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await sendRequest<IBackendRes<ITrackTop>>({
+        url: `http://localhost:8000/api/v1/tracks/${id}`,
+        method: "GET",
+      });
+      if (res && res.data) {
+        setTrackInfo(res.data);
+      }
+    };
+    fetchData();
+  }, [id]);
   // On play button click
   const onPlayClick = useCallback(() => {
     if (wavesurfer) {
@@ -209,7 +224,7 @@ const WaveTrack = () => {
                   color: "white",
                 }}
               >
-                Hỏi Dân IT's song
+                {trackInfo?.title}
               </div>
               <div
                 style={{
@@ -221,7 +236,7 @@ const WaveTrack = () => {
                   color: "white",
                 }}
               >
-                Eric
+                {trackInfo?.description}
               </div>
             </div>
           </div>

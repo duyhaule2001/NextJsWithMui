@@ -64,7 +64,9 @@ const AppFooter = () => {
               flexDirection: "column",
             }}
           >
-            <span style={{ marginRight: "10px", color: "black" }}></span>
+            <span style={{ marginRight: "10px", color: "black" }}>
+              {currentTrack.description}
+            </span>
             <span style={{ color: "black", width: "100px" }}>
               {currentTrack.title}
             </span>
