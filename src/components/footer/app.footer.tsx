@@ -1,6 +1,6 @@
 "use client";
 import { AppBar, Container } from "@mui/material";
-import React, { useContext, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 import { useHasMounted } from "../utils/customHooks";
@@ -11,17 +11,17 @@ const AppFooter = () => {
   const playerRef = useRef(null);
   const { currentTrack, setCurrentTrack } = useTrackContext() as ITrackContext;
 
+  useEffect(() => {
+    //@ts-ignore
+    if (currentTrack.isPlaying) {
+      //@ts-ignore
+      playerRef?.current?.audio?.current?.play();
+    } else {
+      //@ts-ignore
+      playerRef?.current?.audio?.current?.pause();
+    }
+  }, [currentTrack]);
   if (!hasMounted) return <></>;
-
-  //@ts-ignore
-  if (currentTrack.isPlaying) {
-    //@ts-ignore
-    playerRef?.current?.audio?.current?.play();
-  } else {
-    //@ts-ignore
-    playerRef?.current?.audio?.current?.pause();
-  }
-
   return (
     <div style={{ marginTop: 50 }}>
       <AppBar
