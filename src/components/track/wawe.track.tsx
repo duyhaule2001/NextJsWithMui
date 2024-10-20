@@ -8,22 +8,23 @@ import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from "@mui/icons-material/Pause";
 import "./wave.scss";
 import { Tooltip } from "@mui/material";
-import { sendRequest } from "../utils/api";
 import { useTrackContext } from "@/lib/track.wrapper";
+
 interface IProps {
-  trackInfo: ITrackTop | null;
+  track: ITrackTop | null;
+  comments: ITrackComment[] | null;
 }
+
 const WaveTrack = (props: IProps) => {
-  const { trackInfo } = props;
+  const { track, comments } = props;
   const searchParams = useSearchParams();
   const fileName = searchParams.get("audio");
   const containerRef = useRef<HTMLDivElement>(null);
   const hoverRef = useRef<HTMLDivElement>(null);
-
   const [time, setTime] = useState<string>("0:00");
   const [duration, setDuration] = useState<string>("0:00");
-
   const { currentTrack, setCurrentTrack } = useTrackContext() as ITrackContext;
+
   const optionsMemo = useMemo((): Omit<WaveSurferOptions, "container"> => {
     let gradient, progressGradient;
     if (typeof window !== "undefined") {
@@ -84,7 +85,6 @@ const WaveTrack = (props: IProps) => {
   }, []);
   const wavesurfer = useWavesurfer(containerRef, optionsMemo);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
-
   // Initialize wavesurfer when the container mounts
   // or any of the props change
   useEffect(() => {
@@ -168,10 +168,10 @@ const WaveTrack = (props: IProps) => {
   }, [currentTrack]);
 
   useEffect(() => {
-    if (trackInfo?._id && !currentTrack?._id) {
-      setCurrentTrack({ ...trackInfo, isPlaying: false });
-    }
-  }, [trackInfo]);
+    if (track?._id && !currentTrack?._id)
+      setCurrentTrack({ ...track, isPlaying: false });
+  }, [track]);
+
   return (
     <div style={{ marginTop: 20 }}>
       <div
@@ -199,11 +199,8 @@ const WaveTrack = (props: IProps) => {
               <div
                 onClick={() => {
                   onPlayClick();
-                  if (trackInfo && wavesurfer) {
-                    setCurrentTrack({
-                      ...trackInfo,
-                      isPlaying: false,
-                    });
+                  if (track && wavesurfer) {
+                    setCurrentTrack({ ...currentTrack, isPlaying: false });
                   }
                 }}
                 style={{
@@ -234,7 +231,7 @@ const WaveTrack = (props: IProps) => {
                   color: "white",
                 }}
               >
-                {trackInfo?.title}
+                {track?.title}
               </div>
               <div
                 style={{
@@ -246,7 +243,7 @@ const WaveTrack = (props: IProps) => {
                   color: "white",
                 }}
               >
-                {trackInfo?.description}
+                {track?.description}
               </div>
             </div>
           </div>
@@ -266,15 +263,14 @@ const WaveTrack = (props: IProps) => {
               }}
             ></div>
             <div className="comments" style={{ position: "relative" }}>
-              {arrComments.map((item) => {
-                return (
-                  <Tooltip title={item.content} arrow>
+              {comments && comments.length > 0 ? (
+                comments.map((item) => (
+                  <Tooltip title={item.content} arrow key={item._id}>
                     <img
                       onPointerMove={(e) => {
                         const hover = hoverRef.current!;
                         hover.style.width = calLeft(item.moment);
                       }}
-                      className={"" + item.id}
                       style={{
                         height: 20,
                         width: 20,
@@ -283,12 +279,13 @@ const WaveTrack = (props: IProps) => {
                         zIndex: 20,
                         left: calLeft(item.moment),
                       }}
-                      key={item.id}
-                      src={item.avatar}
+                      src={`http://localhost:8000/images/chill1.png`}
                     />
                   </Tooltip>
-                );
-              })}
+                ))
+              ) : (
+                <div>No comments available</div>
+              )}
             </div>
           </div>
         </div>

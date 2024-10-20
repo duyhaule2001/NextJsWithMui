@@ -1,10 +1,11 @@
 "use client";
-import { AppBar, Container } from "@mui/material";
-import React, { useEffect, useRef } from "react";
+import { useTrackContext } from "@/lib/track.wrapper";
+import { useHasMounted } from "../utils/customHooks";
+import { Container } from "@mui/material";
+import AppBar from "@mui/material/AppBar";
+import { useRef, useEffect } from "react";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
-import { useHasMounted } from "../utils/customHooks";
-import { useTrackContext } from "@/lib/track.wrapper";
 
 const AppFooter = () => {
   const hasMounted = useHasMounted();
@@ -12,32 +13,32 @@ const AppFooter = () => {
   const { currentTrack, setCurrentTrack } = useTrackContext() as ITrackContext;
 
   useEffect(() => {
-    //@ts-ignore
-    if (currentTrack.isPlaying) {
-      //@ts-ignore
-      playerRef?.current?.audio?.current?.play();
-    } else {
+    if (currentTrack?.isPlaying === false) {
       //@ts-ignore
       playerRef?.current?.audio?.current?.pause();
     }
+    if (currentTrack?.isPlaying === true) {
+      //@ts-ignore
+      playerRef?.current?.audio?.current?.play();
+    }
   }, [currentTrack]);
-  if (!hasMounted) return <></>;
+
+  if (!hasMounted) return <></>; //fragment
+
   return (
     <div style={{ marginTop: 50 }}>
       <AppBar
         position="fixed"
-        color="primary"
         sx={{
           top: "auto",
           bottom: 0,
-          background: "white",
+          background: "#f2f2f2",
         }}
       >
         <Container
           sx={{
             display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
+            gap: 10,
             ".rhap_main": {
               gap: "30px",
             },
@@ -45,11 +46,13 @@ const AppFooter = () => {
         >
           <AudioPlayer
             ref={playerRef}
-            autoPlay={false}
-            src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/tracks/${currentTrack.trackUrl}`}
-            style={{ border: "none", boxShadow: "none" }}
-            // other props here
             layout="horizontal-reverse"
+            src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/tracks/${currentTrack.trackUrl}`}
+            volume={0.5}
+            style={{
+              boxShadow: "unset",
+              background: "#f2f2f2",
+            }}
             onPlay={() => {
               setCurrentTrack({ ...currentTrack, isPlaying: true });
             }}
@@ -59,17 +62,15 @@ const AppFooter = () => {
           />
           <div
             style={{
-              marginLeft: "20px",
               display: "flex",
               flexDirection: "column",
+              alignItems: "start",
+              justifyContent: "center",
+              minWidth: 100,
             }}
           >
-            <span style={{ marginRight: "10px", color: "black" }}>
-              {currentTrack.description}
-            </span>
-            <span style={{ color: "black", width: "100px" }}>
-              {currentTrack.title}
-            </span>
+            <div style={{ color: "#ccc" }}>{currentTrack.description}</div>
+            <div style={{ color: "black" }}>{currentTrack.title}</div>
           </div>
         </Container>
       </AppBar>

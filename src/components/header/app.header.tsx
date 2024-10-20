@@ -74,6 +74,8 @@ export default function AppHeader() {
     setAnchorEl(event.currentTarget);
   };
 
+  console.log("token", session?.access_token);
+
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
   };
