@@ -6,7 +6,6 @@ import { fetchDefaultImages, sendRequest } from "../utils/api";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useWavesurfer } from "../utils/customHooks";
 import WaveSurfer from "wavesurfer.js";
 dayjs.extend(relativeTime);
 
@@ -115,6 +114,7 @@ const CommentsTrack = (props: IProps) => {
                   justifyContent: "space-between",
                   width: "100%",
                 }}
+                key={comment._id}
               >
                 <div
                   style={{
