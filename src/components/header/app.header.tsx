@@ -203,7 +203,6 @@ export default function AppHeader() {
                   >
                     Upload
                   </Link>
-                  {/* <Avatar onClick={handleProfileMenuOpen}>LE</Avatar> */}
                   <img
                     onClick={handleProfileMenuOpen}
                     style={{
