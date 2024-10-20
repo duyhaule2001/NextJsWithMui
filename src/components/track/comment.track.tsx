@@ -1,8 +1,11 @@
+"use client";
 import { TextField } from "@mui/material";
 import dayjs from "dayjs";
-import React from "react";
-import { fetchDefaultImages } from "../utils/api";
+import React, { useState } from "react";
+import { fetchDefaultImages, sendRequest } from "../utils/api";
 import relativeTime from "dayjs/plugin/relativeTime";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 dayjs.extend(relativeTime);
 
 interface IProps {
@@ -11,6 +14,33 @@ interface IProps {
 }
 const CommentsTrack = (props: IProps) => {
   const { track, comments } = props;
+  const { data: session } = useSession();
+  const [yourComment, setYourComment] = useState<string>("");
+  const router = useRouter();
+
+  console.log(yourComment);
+
+  const formatTime = (seconds: number) => {
+    const minutes = Math.floor(seconds / 60);
+    const secondsRemainder = Math.round(seconds) % 60;
+    const paddedSeconds = `0${secondsRemainder}`.slice(-2);
+    return `${minutes}:${paddedSeconds}`;
+  };
+
+  const handleSubmit = async () => {
+    const res = await sendRequest<IBackendRes<ITrackComment>>({
+      url: "http://localhost:8000/api/v1/comments",
+      method: "POST",
+      body: { content: yourComment, moment: 10, track: track?._id },
+      headers: {
+        Authorization: `Bearer ${session?.access_token}`,
+      },
+    });
+    if (res.data) {
+      setYourComment("");
+      router.refresh();
+    }
+  };
   return (
     <div
       style={{
@@ -23,6 +53,13 @@ const CommentsTrack = (props: IProps) => {
         variant="standard"
         sx={{
           width: "100%",
+        }}
+        value={yourComment}
+        onChange={(e) => setYourComment(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            handleSubmit();
+          }
         }}
       />
       <div
@@ -81,7 +118,9 @@ const CommentsTrack = (props: IProps) => {
                       marginLeft: 10,
                     }}
                   >
-                    <p>{comment.user.email}</p>
+                    <p>
+                      {comment.user.email} at {formatTime(10)}
+                    </p>
                     <p>{comment.content}</p>
                   </span>
                 </div>
