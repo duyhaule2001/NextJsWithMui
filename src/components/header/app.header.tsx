@@ -18,6 +18,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { signIn, signOut } from "next-auth/react";
+import { fetchDefaultImages } from "../utils/api";
 
 //style-components
 const Search = styled("div")(({ theme }) => ({
@@ -202,7 +203,16 @@ export default function AppHeader() {
                   >
                     Upload
                   </Link>
-                  <Avatar onClick={handleProfileMenuOpen}>LE</Avatar>
+                  {/* <Avatar onClick={handleProfileMenuOpen}>LE</Avatar> */}
+                  <img
+                    onClick={handleProfileMenuOpen}
+                    style={{
+                      height: 35,
+                      width: 35,
+                      cursor: "pointer",
+                    }}
+                    src={fetchDefaultImages(session.user.type)}
+                  />
                 </>
               ) : (
                 <>
