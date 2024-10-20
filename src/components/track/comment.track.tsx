@@ -6,14 +6,17 @@ import { fetchDefaultImages, sendRequest } from "../utils/api";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useWavesurfer } from "../utils/customHooks";
+import WaveSurfer from "wavesurfer.js";
 dayjs.extend(relativeTime);
 
 interface IProps {
   track: ITrackTop | null;
   comments: ITrackComment[] | null;
+  wavesurfer: WaveSurfer | null;
 }
 const CommentsTrack = (props: IProps) => {
-  const { track, comments } = props;
+  const { track, comments, wavesurfer } = props;
   const { data: session } = useSession();
   const [yourComment, setYourComment] = useState<string>("");
   const router = useRouter();
@@ -31,7 +34,11 @@ const CommentsTrack = (props: IProps) => {
     const res = await sendRequest<IBackendRes<ITrackComment>>({
       url: "http://localhost:8000/api/v1/comments",
       method: "POST",
-      body: { content: yourComment, moment: 10, track: track?._id },
+      body: {
+        content: yourComment,
+        moment: Math.round(wavesurfer?.getCurrentTime() ?? 0),
+        track: track?._id,
+      },
       headers: {
         Authorization: `Bearer ${session?.access_token}`,
       },
@@ -39,6 +46,14 @@ const CommentsTrack = (props: IProps) => {
     if (res.data) {
       setYourComment("");
       router.refresh();
+    }
+  };
+
+  const handleJumpTrack = (moment: number) => {
+    if (wavesurfer) {
+      const duration = wavesurfer.getDuration();
+      wavesurfer.seekTo(moment / duration);
+      wavesurfer.play();
     }
   };
   return (
@@ -121,7 +136,9 @@ const CommentsTrack = (props: IProps) => {
                     <p>
                       {comment.user.email} at {formatTime(10)}
                     </p>
-                    <p>{comment.content}</p>
+                    <p onClick={() => handleJumpTrack(comment.moment)}>
+                      {comment.content}
+                    </p>
                   </span>
                 </div>
                 <p> {dayjs(comment.createdAt).fromNow()}</p>

@@ -134,7 +134,7 @@ const WaveTrack = (props: IProps) => {
   };
 
   const calLeft = (moment: number) => {
-    const hardCodeDuration = 199;
+    const hardCodeDuration = wavesurfer?.getDuration() ?? 0;
     const percent = (moment / hardCodeDuration) * 100;
     return `${percent}%`;
   };
@@ -297,7 +297,11 @@ const WaveTrack = (props: IProps) => {
           )}
         </div>
       </div>
-      <CommentsTrack track={track} comments={comments} />
+      <CommentsTrack
+        track={track}
+        comments={comments}
+        wavesurfer={wavesurfer}
+      />
     </div>
   );
 };

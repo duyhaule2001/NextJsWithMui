@@ -38,6 +38,7 @@ const AppFooter = () => {
             }}
           >
             <Container
+              disableGutters
               sx={{
                 display: "flex",
                 gap: 10,
@@ -71,8 +72,20 @@ const AppFooter = () => {
                   minWidth: 100,
                 }}
               >
-                <div style={{ color: "#ccc" }}>{currentTrack.description}</div>
-                <div style={{ color: "black" }}>{currentTrack.title}</div>
+                <div style={{ color: "#ccc", width: "220px" }}>
+                  {currentTrack.description}
+                </div>
+                <div
+                  style={{
+                    color: "black",
+                    width: "100%",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {currentTrack.title}
+                </div>
               </div>
             </Container>
           </AppBar>
