@@ -1,9 +1,10 @@
-import { Chip } from "@mui/material";
+"use client";
+import Chip from "@mui/material/Chip";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
 import { sendRequest } from "../utils/api";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 interface IProps {
@@ -33,7 +34,6 @@ const LikeTrack = (props: IProps) => {
       if (res2?.data?.result) setTrackLikes(res2?.data?.result);
     }
   };
-
   useEffect(() => {
     fetchData();
   }, [session]);
@@ -54,32 +54,35 @@ const LikeTrack = (props: IProps) => {
     fetchData();
     router.refresh();
   };
-
   return (
     <div
       style={{
+        margin: "20px 10px 0 10px",
         display: "flex",
         justifyContent: "space-between",
-        alignItems: "center",
       }}
     >
       <Chip
-        icon={<FavoriteIcon />}
-        label="Like"
-        clickable
+        onClick={() => handleLikeTrack()}
+        sx={{ borderRadius: "5px" }}
+        size="medium"
+        variant="outlined"
         color={
           trackLikes?.some((t) => t._id === track?._id) ? "error" : "default"
         }
-        onClick={() => handleLikeTrack()}
+        clickable
+        icon={<FavoriteIcon />}
+        label="Like"
       />
       <div
-        style={{
-          gap: 10,
-          display: "flex",
-        }}
+        style={{ display: "flex", width: "100px", gap: "20px", color: "#999" }}
       >
-        <Chip icon={<PlayArrowIcon />} label={track?.countPlay} />
-        <Chip icon={<FavoriteIcon />} label={track?.countLike} />
+        <span style={{ display: "flex", alignItems: "center" }}>
+          <PlayArrowIcon sx={{ fontSize: "20px" }} /> {track?.countPlay}
+        </span>
+        <span style={{ display: "flex", alignItems: "center" }}>
+          <FavoriteIcon sx={{ fontSize: "20px" }} /> {track?.countLike}
+        </span>
       </div>
     </div>
   );
