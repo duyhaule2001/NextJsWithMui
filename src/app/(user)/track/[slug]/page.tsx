@@ -1,7 +1,7 @@
 import WaveTrack from "@/components/track/wawe.track";
 import { sendRequest } from "@/components/utils/api";
 import { Container } from "@mui/material";
-
+import slugify from "slugify";
 import type { Metadata, ResolvingMetadata } from "next";
 
 type Props = {
@@ -32,6 +32,12 @@ export async function generateMetadata(
 }
 
 const DetailTrackPage = async (props: any) => {
+  console.log(
+    slugify("Người Đàn Ông Mang Tên Ove (Tái Bản 2022)", {
+      lower: true,
+      locale: "vi",
+    })
+  );
   const { params } = props;
 
   const res = await sendRequest<IBackendRes<ITrackTop>>({
