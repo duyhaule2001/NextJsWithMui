@@ -20,6 +20,14 @@ export async function generateMetadata(
   return {
     title: res.data?.title,
     description: res.data?.description,
+    openGraph: {
+      title: "Hỏi Dân IT",
+      description: "Beyond Your Coding Skills",
+      type: "website",
+      images: [
+        `https://raw.githubusercontent.com/haryphamdev/sharing-host-files/refs/heads/master/detail-doctors/a4.jpg`,
+      ],
+    },
   };
 }
 
