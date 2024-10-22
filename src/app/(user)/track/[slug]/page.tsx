@@ -58,6 +58,8 @@ const DetailTrackPage = async (props: any) => {
     },
   });
 
+  await new Promise((resolve) => setTimeout(resolve, 3000));
+
   if (!res?.data) {
     notFound();
   }
