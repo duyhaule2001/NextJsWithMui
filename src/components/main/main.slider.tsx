@@ -11,7 +11,6 @@ import Divider from "@mui/material/Divider";
 import Link from "next/link";
 import { convertSlugUrl } from "../utils/api";
 import Image from "next/image";
-import a from "../../../public/flowers.jpg";
 interface IProps {
   data: ITrackTop[];
   title: string;
@@ -127,8 +126,7 @@ const MainSlider = (props: IProps) => {
                 }}
               >
                 <Image
-                  src={a}
-                  // src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${track.imgUrl}`}
+                  src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${track.imgUrl}`}
                   alt="image"
                   fill
                   style={{

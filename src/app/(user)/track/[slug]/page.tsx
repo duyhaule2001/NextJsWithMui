@@ -52,12 +52,10 @@ const DetailTrackPage = async (props: any) => {
     queryParams: {
       current: 1,
       pageSize: 10,
-      trackId: params.slug,
+      trackId: id,
       sort: "-createdAt",
     },
   });
-
-  console.log(res1);
 
   return (
     <Container>

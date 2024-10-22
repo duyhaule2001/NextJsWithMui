@@ -7,6 +7,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import WaveSurfer from "wavesurfer.js";
+import Image from "next/image";
 dayjs.extend(relativeTime);
 
 interface IProps {
@@ -90,12 +91,13 @@ const CommentsTrack = (props: IProps) => {
             alignItems: "center",
           }}
         >
-          <img
+          <Image
             src={fetchDefaultImages(
               `${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${track?.uploader.type}`
             )}
-            width={250}
+            alt="avatar comment"
             height={250}
+            width={250}
           />
           <p>{track?.uploader.email}</p>
         </div>
@@ -123,11 +125,13 @@ const CommentsTrack = (props: IProps) => {
                     alignItems: "center",
                   }}
                 >
-                  <img
+                  <Image
                     src={fetchDefaultImages(comment.user.type)}
                     width={50}
                     height={50}
+                    alt="comment"
                   />
+
                   <span
                     style={{
                       marginLeft: 10,
