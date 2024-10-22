@@ -11,6 +11,7 @@ import Divider from "@mui/material/Divider";
 import Link from "next/link";
 import { convertSlugUrl } from "../utils/api";
 import Image from "next/image";
+import a from "../../../public/flowers.jpg";
 interface IProps {
   data: ITrackTop[];
   title: string;
@@ -65,7 +66,34 @@ const MainSlider = (props: IProps) => {
     slidesToScroll: 1,
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 3,
+          infinite: true,
+          dots: true,
+        },
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+          initialSlide: 2,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
   };
+
   //box === div
   return (
     <Box
@@ -91,9 +119,6 @@ const MainSlider = (props: IProps) => {
         {data.map((track) => {
           return (
             <div className="track" key={track._id}>
-              {/* <img
-                src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${track.imgUrl}`}
-              /> */}
               <div
                 style={{
                   position: "relative",
@@ -102,7 +127,8 @@ const MainSlider = (props: IProps) => {
                 }}
               >
                 <Image
-                  src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${track.imgUrl}`}
+                  src={a}
+                  // src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${track.imgUrl}`}
                   alt="image"
                   fill
                   style={{
