@@ -1,8 +1,9 @@
 import WaveTrack from "@/components/track/wawe.track";
 import { sendRequest } from "@/components/utils/api";
 import { Container } from "@mui/material";
-import slugify from "slugify";
 import type { Metadata, ResolvingMetadata } from "next";
+import slugify from "slugify";
+import { notFound } from "next/navigation";
 
 type Props = {
   params: { slug: string };
@@ -56,6 +57,10 @@ const DetailTrackPage = async (props: any) => {
       sort: "-createdAt",
     },
   });
+
+  if (!res?.data) {
+    notFound();
+  }
 
   return (
     <Container>
