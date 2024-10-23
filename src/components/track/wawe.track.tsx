@@ -158,12 +158,23 @@ const WaveTrack = (props: IProps) => {
   const handleIncreaseView = async () => {
     if (firstViewRef.current) {
       await sendRequest<IBackendRes<IModelPaginate<ITrackLike>>>({
-        url: `http://localhost:8000/api/v1/tracks/increase-view`,
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/increase-view`,
         method: "POST",
         body: {
           trackId: track?._id,
         },
       });
+
+      await sendRequest<IBackendRes<any>>({
+        url: `/api/revalidate`,
+        method: "POST",
+        queryParams: {
+          tag: "track-by-id",
+          //trong thực tế không viết secret ở client vì bị lộ. nên truyền từ cha sang con hoặc cách khác
+          secret: "justArandomString",
+        },
+      });
+
       router.refresh();
       firstViewRef.current = false;
     }

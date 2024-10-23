@@ -65,7 +65,7 @@ function InputFileUpload(props: any) {
     formData.append("fileUpload", image);
     try {
       const res = await axios.post(
-        "http://localhost:8000/api/v1/files/upload",
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/files/upload`,
         formData,
         {
           headers: {
@@ -156,7 +156,7 @@ const Step2 = (props: IProps) => {
 
   const handleSubmitForm = async () => {
     const res = await sendRequest<IBackendRes<ITrackTop[]>>({
-      url: "http://localhost:8000/api/v1/tracks",
+      url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks`,
       method: "POST",
       body: {
         title: info.title,
@@ -170,6 +170,15 @@ const Step2 = (props: IProps) => {
       },
     });
     if (res.data) {
+      await sendRequest<IBackendRes<any>>({
+        url: `/api/revalidate`,
+        method: "POST",
+        queryParams: {
+          tag: "track-by-profile",
+          //trong thực tế không viết secret ở client vì bị lộ. nên truyền từ cha sang con hoặc cách khác
+          secret: "justArandomString",
+        },
+      });
       setValue(0);
       toast.success("create success");
     } else {
